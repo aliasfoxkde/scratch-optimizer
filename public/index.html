@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scratch Optimizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .dropzone {
+            margin: 20px 0;
+            padding: 30px;
+            border: 2px dashed #999;
+            text-align: center;
+            color: #666;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+        .dropzone.dragging {
+            border-color: #333;
+            color: #333;
+        }
+        #summary {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        #summary p {
+            margin: 0 0 10px;
+        }
+        #summary a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        #summary a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scratch Optimizer</h1>
+        <div id="dropzone" class="dropzone">Drag and drop your .sb3 file here or click to upload</div>
+        <div id="summary"></div>
+    </div>
+
+    <script>
+        const dropzone = document.getElementById("dropzone");
+        const summaryDiv = document.getElementById("summary");
+
+        dropzone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropzone.classList.add("dragging");
+        });
+
+        dropzone.addEventListener("dragleave", () => {
+            dropzone.classList.remove("dragging");
+        });
+
+        dropzone.addEventListener("drop", async (e) => {
+            e.preventDefault();
+            dropzone.classList.remove("dragging");
+
+            const file = e.dataTransfer.files[0];
+            if (file) {
+                await uploadFile(file);
+            }
+        });
+
+        dropzone.addEventListener("click", async () => {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = ".sb3";
+            input.onchange = async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    await uploadFile(file);
+                }
+            };
+            input.click();
+        });
+
+        async function uploadFile(file) {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            summaryDiv.innerHTML = "<p>Processing...</p>";
+
+            try {
+                const response = await fetch("/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error(await response.text());
+                }
+
+                const { message, originalSize, optimizedSize, downloadLink } = await response.json();
+
+                summaryDiv.innerHTML = `
+                    <h2>${message}</h2>
+                    <p><strong>Original File Size:</strong> ${originalSize} MB</p>
+                    <p><strong>Optimized File Size:</strong> ${optimizedSize} MB</p>
+                    <p><a href="${downloadLink}" download>Download Optimized File</a></p>
+                `;
+            } catch (err) {
+                summaryDiv.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

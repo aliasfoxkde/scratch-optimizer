@@ -128,3 +128,24 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Working files and folders
+**/_[Aa]rchived/
+**/_[Aa]rchive/
+**/[Aa]rchive/
+**/[Aa]rchived/
+**/[Tt]emp/
+**/[Tt]est/
+**/[Ll]ogs/
+**/[Ll]ogging/
+**/[Rr]eport/
+**/[Rr]eports/
+**/[Zz]ip/
+**/[Cc][Ss][Vv][Ss]/
+**/_shared/
+
+*.zip
+*.sb3
+*- Copy*
+*_old*.*
+*.*bak*.*
