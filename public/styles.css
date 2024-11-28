@@ -163,6 +163,17 @@ body.dark-mode #themeToggle:hover {
     box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2); /* Soft glow */
 }
 
+label[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    background: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    z-index: 10;
+}
+
 /* Mobile-friendly responsive styling */
 @media (max-width: 768px) {
     #downloadButton {

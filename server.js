@@ -17,6 +17,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Multer setup for file uploads
 const upload = multer({ dest: 'uploads/' });
 
+
 // Helper: Convert WAV to MP3
 async function convertWavToMp3(inputPath, outputPath) {
     return new Promise((resolve, reject) => {
@@ -45,6 +46,14 @@ async function optimizeImage(inputPath) {
 // Endpoint: File Upload and Optimization
 app.post('/upload', upload.single('file'), async (req, res) => {
     const uploadPath = req.file.path;
+    const allowedExtensions = ['.sb2', '.sb3', '.sprite3', '.Sprite'];
+    const fileExt = path.extname(req.file.originalname); // Define here where `req` is available
+
+    // Check if the file extension is allowed
+    if (!allowedExtensions.includes(fileExt)) {
+        return res.status(400).send('Invalid file type. Please upload an SB2, SB3, Sprite3, or Sprite file.');
+    }
+
     const outputDir = `uploads/${path.parse(req.file.originalname).name}`;
     const outputSb3 = `uploads/optimized_${path.parse(req.file.originalname).name}.sb3`;
 
@@ -73,13 +82,14 @@ app.post('/upload', upload.single('file'), async (req, res) => {
             }
 
             // Optimize images
-            if (file.endsWith('.png') || file.endsWith('.svg')) {
+            if (file.endsWith('.png')) {
                 await optimizeImage(filePath);
             }
         }
 
         // Step 3: Process project.json
-        const projectPath = path.join(outputDir, 'project.json');
+        // const projectPath = path.join(outputDir, 'project.json');
+        const projectPath = path.join(outputDir, fileExt === '.sprite3' ? 'sprite.json' : 'project.json');
         const stat = await fs.promises.stat(projectPath);
 
         if (stat.isFile()) {
@@ -115,6 +125,21 @@ app.post('/upload', upload.single('file'), async (req, res) => {
             downloadUrl: `/download/${path.basename(outputSb3)}`
         });
 
+        // Step 7: Move final file to downloads/ and clear uploads
+        const downloadsDir = path.join(__dirname, 'downloads');
+
+        // Ensure downloads folder exists
+        if (!fs.existsSync(downloadsDir)) {
+            fs.mkdirSync(downloadsDir, { recursive: true });
+        }
+
+        // Move the file and clears the uploads/ directory
+        const downloadPath = path.join(downloadsDir, path.basename(outputSb3));
+        await fs.promises.rename(outputSb3, downloadPath);
+
+        // Cleanup extracted files but leave uploads intact for now
+        await fs.promises.rm(outputDir, { recursive: true, force: true });
+
     } catch (error) {
         console.error('Error processing file:', error);
         res.status(500).send('Error processing file.');
@@ -123,11 +148,11 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
 // Endpoint for file download
 app.get('/download/:filename', (req, res) => {
-    const file = path.join(__dirname, 'uploads', req.params.filename);
+    const file = path.join(__dirname, 'downloads', req.params.filename); // Change to 'downloads'
     res.download(file, (err) => {
         if (err) {
             console.error('Error sending file:', err);
-            res.status(500).send('Error sending file.');
+            res.status(404).send('File not found.');
         } else {
             console.log('File download completed successfully');
         }

@@ -10,12 +10,16 @@ The code is licensed under the permissive MIT License.
 
 ## TODO
 - [ ] Add Console-looking Progress Bar (with percentage loading bar)
+- [ ] Add support for .Sprite files (same structure as SB3 files)
+- [ ] Add support for bulk uploads (multiple files) 
 - [ ] Improve PNG optimization for "web"
 - [ ] Provide summary with stats on completion
 - [ ] Add graphics and improve UI
 - [ ] Optimize code base and refactor
 - [ ] Clear/cleanup Uploads folder
-- [ ] Move downloads to "downloads/" folder
+- [ ] Debugging and Testing
+  - [ ] Add logging wrapper to assist in resolving issues.
+  - [ ] Confirm that a vanilla deployment works
 - [ ] Options
   - [ ] Add Option tooltips
   - [ ] Add expand/collapse select for options
@@ -30,6 +34,7 @@ The code is licensed under the permissive MIT License.
   - [x] Cleanup Project Files
   - [ ] Truncate Comments > 8000 characters
   - [ ] Remove Original Comments 
+- [ ] Add logic to optimize SVG images (if applicable)
 - [ ] Cleanup Project files is optional and would include get rid of hash filenames and 
       use the actual asset names (this may cause side-effects).
 - [ ] Remove dead code blocks
@@ -51,11 +56,10 @@ The code is licensed under the permissive MIT License.
 - [ ] Integrate with CORETEX project (Ultra-small & fast offline AI LLM PWA)
 
 ## Q&A:
-- [ ] Would it be useful to convert sprites to sprite sheets?
+- [ ] Would it be useful to convert sprites to referenced sprite sheets?
 
 ## Bug
 - [ ] Remove instances in project.json where either images or sound do not exist.
-- [ ] Some images load in as question marks (conversion issue, project.json, etc.?) 
 
 ## Usage
 - `npm install`

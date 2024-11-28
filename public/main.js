@@ -25,7 +25,7 @@ dropzone.addEventListener("drop", async (e) => {
 dropzone.addEventListener("click", async () => {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".sb3";
+    input.accept = ".sb2,.sb3,.sprite3,.sprite2";
     input.onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -89,19 +89,20 @@ async function uploadFile(file) {
         `;
 
         // Create the download button after the process is complete
-        const downloadUrl = data.downloadUrl;
-        // createDownloadButton(downloadUrl, "optimized.sb3");
-        // createDownloadButton(downloadUrl, "Optimized SB3 File.");
-		
-        // Extract the file name dynamically from the URL
-        const fileName = downloadUrl.split('/').pop();
-
+        const downloadUrl = data.downloadUrl; // Vs Generic Label: "Optimized SB3 File."
+        const fileName = downloadUrl.split('/').pop();  // Extract from the URL
         createDownloadButton(downloadUrl, fileName);
 
     } catch (err) {
         console.error(err);
         summaryDiv.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
     }
+}
+
+// Update Progress Bar Element
+function updateProgress(percent) {
+    const progress = document.getElementById("progress");
+    progress.style.width = `${percent}%`;
 }
 
 // Create Download Button

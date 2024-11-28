@@ -47,12 +47,8 @@ removed or abandoned.
 - Remove Empty Costumes and Sounds: Clean up costumes and sound files that contain no data or are placeholders.
 
 ## Miscellaneous Improvements
-- Compatibility Fixes: Ensure compatibility with Scratch’s latest version and warn about any unsupported 
-  features or customizations.
-- Performance Benchmarking: Provide an estimated performance improvement summary for users after optimization 
-  (e.g., reduction in file size, asset count).
-- Backup Project Before Optimization: Create a .bak file for the original project to avoid accidental 
-  loss of data during optimization.
+- Compatibility Fixes: Ensure compatibility with Scratch’s latest version and warn about any unsupported features.
+- Performance Benchmarking: Provide an estimated performance improvement summary for users after optimization.
 
 ## Support Advanced Features
 - Add support for converting advanced features (e.g., cloud variables) into, common game features, simplified 
@@ -62,5 +58,8 @@ removed or abandoned.
 ## Additional Suggestions
 - Incorporate User Feedback: Allow users to customize which optimization steps to apply through a configuration 
   file or interactive interface.
-- Integration with Git or Version Control: Track changes made to projects for easier rollbacks or collaboration.
 - Logging Changes: Generate a summary report listing all optimizations performed for transparency.
+- Return detailed suggestion summary for user and possibly scores for each category checks (basically a 
+  comprehensive end-user analysis). Could expand suggestions beyond the code itself. If X logic used (movement, 
+  spawning, text, etc.) then suggest maybe using an engine another Scratch contributor created, such as Midi Player, 
+  Text-Generator (text to graphic), etc.

@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v0.3.1 - Feature Improvements & Bug Fixes
+- [x] Add Option tooltips (initial)
+- [x] Move downloads to "downloads/" folder
+- [x] Clear/cleanup Uploads folder (initial: extracted project folder)
+- [x] Fixed: some images load in as question marks (conversion issue, project.json, etc.?)
+
 ## v0.2.2 - Cleanup and Debugging
 - [x] Initial working version with base features.
 - [x] Include basic file size details (before and after optimizations)

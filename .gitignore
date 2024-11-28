@@ -144,6 +144,7 @@ dist
 **/[Cc][Ss][Vv][Ss]/
 **/_shared/
 uploads/
+downloads/
 
 *.zip
 *.sb3
