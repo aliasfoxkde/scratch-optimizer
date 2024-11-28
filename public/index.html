@@ -1,132 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scratch Optimizer helps polish and enhance your Scratch projects for better performance and compatibility with tools like TurboWarp.">
+    <meta name="keywords" content="Scratch, Scratch Optimizer, TurboWarp, SB3, Scratch Projects, Optimize, Game Development">
+    <meta name="author" content="AliasFoxKDE">
+    
+    <!-- Icons for various devices and browsers -->
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="manifest" href="icons/site.webmanifest">
+
     <title>Scratch Optimizer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f7f7f7;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        .dropzone {
-            margin: 20px 0;
-            padding: 30px;
-            border: 2px dashed #999;
-            text-align: center;
-            color: #666;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-        .dropzone.dragging {
-            border-color: #333;
-            color: #333;
-        }
-        #summary {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
-        #summary p {
-            margin: 0 0 10px;
-        }
-        #summary a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        #summary a:hover {
-            text-decoration: underline;
-        }
-    </style>
+
+    <!-- Link to external CSS for styling -->
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
+
 <body>
     <div class="container">
+        <!-- Header Section -->
         <h1>Scratch Optimizer</h1>
-        <div id="dropzone" class="dropzone">Drag and drop your .sb3 file here or click to upload</div>
+
+        <!-- Dropzone Section -->
+        <div id="dropzone" class="dropzone" aria-label="File Upload">
+            Drag and drop your <strong>.sb3</strong> file here or click to upload
+        </div>
+
+        <!-- Options Section -->
+        <div id="options">
+            <h3>Options (Coming Soon)</h3>
+            <p>Select optimization features you'd like to enable:</p>
+            <form>
+                <fieldset disabled>
+                    <div>
+                        <input type="checkbox" id="optimizeCode" name="optimizeCode">
+                        <label for="optimizeCode">Optimize Code Blocks</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="aiComment" name="aiComment">
+                        <label for="aiComment">Use AI to Comment Blocks</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="optimizeGraphics" name="optimizeGraphics">
+                        <label for="optimizeGraphics">Optimize Assets & Graphics</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="convertAudio" name="convertAudio">
+                        <label for="convertAudio">Convert WAV files to MP3</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="cleanupFiles" name="cleanupFiles">
+                        <label for="cleanupFiles">Cleanup Project Files</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="truncateComments" name="truncateComments">
+                        <label for="truncateComments">Truncate Comments > 8000 characters</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="removeComments" name="removeComments">
+                        <label for="removeComments">Remove Original Comments</label>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+        <!-- Info Section -->
+        <div id="info">
+            <p>
+                <strong>Scratch Optimizer</strong> is a tool designed to enhance your Scratch projects, particularly for use with 
+                the <a href="https://packager.turbowarp.org" target="_blank" rel="noopener noreferrer">TurboWarp Packager</a>. 
+                It's especially useful if you're preparing your project for publishing as a game or for advanced packaging needs.
+            </p>
+            <p>
+                You are welcome to contribute, make suggestions, provide feedback, or simply use the tool for free. 
+                The code is licensed under the permissive <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT License</a>.
+            </p>
+        </div>
+
+        <!-- Resources Section -->
+        <div id="resources">
+            <h3>Resources</h3>
+            <ul>
+                <li>
+                    <a href="https://turbowarp.org/editor" target="_blank" rel="noopener noreferrer">
+                        Speed up your Scratch Project with the TurboWarp Editor
+                    </a>.
+                </li>
+                <li>
+                    <a href="https://en.scratch-wiki.info/wiki/Scratch_Wiki_Home" target="_blank" rel="noopener noreferrer">
+                        Learn more about Scratch in the Scratch Wiki
+                    </a>.
+                </li>
+                <li>
+                    <a href="https://packager.turbowarp.org" target="_blank" rel="noopener noreferrer">
+                        Package your project using the TurboWarp Packager
+                    </a>.
+                </li>
+                <li>
+                    <a href="https://turbowarp.github.io/sb3fix" target="_blank" rel="noopener noreferrer">
+                        Repair Scratch project (SB2/SB3) files with Sb3Fix
+                    </a>.
+                </li>
+                <li>
+                    <a href="https://drscratch.org/" target="_blank" rel="noopener noreferrer">
+                        Analyze Scratch Projects with Dr. Scratch
+                    </a>.
+                </li>
+                <li>
+                    <a href="https://leopardjs.com" target="_blank" rel="noopener noreferrer">
+                        Convert Scratch to JavaScript using LeopardJS
+                    </a>.
+                </li>
+                <li>
+                    <a href="https://github.com/aliasfoxkde/scratch-optimizer" target="_blank" rel="noopener noreferrer">
+                        View the source code for Scratch Optimizer on GitHub
+                    </a>.
+                </li>
+            </ul>
+        </div>
+
+        <!-- Placeholder for summary or additional features -->
         <div id="summary"></div>
     </div>
 
-    <script>
-        const dropzone = document.getElementById("dropzone");
-        const summaryDiv = document.getElementById("summary");
-
-        dropzone.addEventListener("dragover", (e) => {
-            e.preventDefault();
-            dropzone.classList.add("dragging");
-        });
-
-        dropzone.addEventListener("dragleave", () => {
-            dropzone.classList.remove("dragging");
-        });
-
-        dropzone.addEventListener("drop", async (e) => {
-            e.preventDefault();
-            dropzone.classList.remove("dragging");
-
-            const file = e.dataTransfer.files[0];
-            if (file) {
-                await uploadFile(file);
-            }
-        });
-
-        dropzone.addEventListener("click", async () => {
-            const input = document.createElement("input");
-            input.type = "file";
-            input.accept = ".sb3";
-            input.onchange = async (e) => {
-                const file = e.target.files[0];
-                if (file) {
-                    await uploadFile(file);
-                }
-            };
-            input.click();
-        });
-
-        async function uploadFile(file) {
-            const formData = new FormData();
-            formData.append("file", file);
-
-            summaryDiv.innerHTML = "<p>Processing...</p>";
-
-            try {
-                const response = await fetch("/upload", {
-                    method: "POST",
-                    body: formData,
-                });
-
-                if (!response.ok) {
-                    throw new Error(await response.text());
-                }
-
-                const { message, originalSize, optimizedSize, downloadLink } = await response.json();
-
-                summaryDiv.innerHTML = `
-                    <h2>${message}</h2>
-                    <p><strong>Original File Size:</strong> ${originalSize} MB</p>
-                    <p><strong>Optimized File Size:</strong> ${optimizedSize} MB</p>
-                    <p><a href="${downloadLink}" download>Download Optimized File</a></p>
-                `;
-            } catch (err) {
-                summaryDiv.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
-            }
-        }
-    </script>
+    <!-- External JavaScript -->
+    <script src="main.js"></script>
 </body>
+
 </html>

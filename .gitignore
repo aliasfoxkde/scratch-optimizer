@@ -143,9 +143,11 @@ dist
 **/[Zz]ip/
 **/[Cc][Ss][Vv][Ss]/
 **/_shared/
+uploads/
 
 *.zip
 *.sb3
+*.lock
 *- Copy*
 *_old*.*
 *.*bak*.*
