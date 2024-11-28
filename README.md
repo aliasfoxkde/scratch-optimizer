@@ -34,14 +34,15 @@ The code is licensed under the permissive MIT License.
   - [x] Cleanup Project Files
   - [ ] Truncate Comments > 8000 characters
   - [ ] Remove Original Comments 
-- [ ] Add logic to optimize SVG images (if applicable)
-- [ ] Cleanup Project files is optional and would include get rid of hash filenames and 
+- [ ] Cleanup Project files is optional and would include getting rid of hash filenames and 
       use the actual asset names (this may cause side-effects).
 - [ ] Remove dead code blocks
 - [ ] Convert to JS, refactor (AI), and convert back to blockly format (Scratch).
       The purpose for this would be to optimize the code (reduce redundant blocks and optimize logic).
+- [ ] Remove instances in project.json where either images or sound do not exist.
 
 ## Future Scope
+- [ ] Add logic to optimize SVG images (if applicable)
 - [ ] Create Progressive Web Application (PWA)
 - [ ] Implement ffmpeg wasm to run client side (reduce server requirements)
   npm install @ffmpeg/ffmpeg @ffmpeg/util
@@ -59,7 +60,6 @@ The code is licensed under the permissive MIT License.
 - [ ] Would it be useful to convert sprites to referenced sprite sheets?
 
 ## Bug
-- [ ] Remove instances in project.json where either images or sound do not exist.
 
 ## Usage
 - `npm install`
