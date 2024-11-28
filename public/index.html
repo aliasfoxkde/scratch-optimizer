@@ -7,7 +7,7 @@
     <meta name="description" content="Scratch Optimizer helps polish and enhance your Scratch projects for better performance and compatibility with tools like TurboWarp.">
     <meta name="keywords" content="Scratch, Scratch Optimizer, TurboWarp, SB3, Scratch Projects, Optimize, Game Development">
     <meta name="author" content="AliasFoxKDE">
-    
+
     <!-- Icons for various devices and browsers -->
     <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
@@ -23,7 +23,10 @@
 <body>
     <div class="container">
         <!-- Header Section -->
-        <h1>Scratch Optimizer</h1>
+        <div class="header">
+            <h1>Scratch Optimizer</h1>
+            <button id="themeToggle" aria-label="Toggle dark/light mode">🌙</button>
+        </div>
 
         <!-- Dropzone Section -->
         <div id="dropzone" class="dropzone" aria-label="File Upload">
@@ -45,15 +48,15 @@
                         <label for="aiComment">Use AI to Comment Blocks</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="optimizeGraphics" name="optimizeGraphics">
-                        <label for="optimizeGraphics">Optimize Assets & Graphics</label>
+                        <input type="checkbox" id="optimizeGraphics" name="optimizeGraphics"  checked="true">
+                        <label for="optimizeGraphics">Optimize Assets &amp; Graphics</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="convertAudio" name="convertAudio">
+                        <input type="checkbox" id="convertAudio" name="convertAudio"  checked="true">
                         <label for="convertAudio">Convert WAV files to MP3</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="cleanupFiles" name="cleanupFiles">
+                        <input type="checkbox" id="cleanupFiles" name="cleanupFiles" checked="true">
                         <label for="cleanupFiles">Cleanup Project Files</label>
                     </div>
                     <div>
@@ -62,7 +65,7 @@
                     </div>
                     <div>
                         <input type="checkbox" id="removeComments" name="removeComments">
-                        <label for="removeComments">Remove Original Comments</label>
+                        <label for="removeComments">Remove Comments</label>
                     </div>
                 </fieldset>
             </form>
@@ -81,50 +84,11 @@
             </p>
         </div>
 
-        <!-- Resources Section -->
-        <div id="resources">
-            <h3>Resources</h3>
-            <ul>
-                <li>
-                    <a href="https://turbowarp.org/editor" target="_blank" rel="noopener noreferrer">
-                        Speed up your Scratch Project with the TurboWarp Editor
-                    </a>.
-                </li>
-                <li>
-                    <a href="https://en.scratch-wiki.info/wiki/Scratch_Wiki_Home" target="_blank" rel="noopener noreferrer">
-                        Learn more about Scratch in the Scratch Wiki
-                    </a>.
-                </li>
-                <li>
-                    <a href="https://packager.turbowarp.org" target="_blank" rel="noopener noreferrer">
-                        Package your project using the TurboWarp Packager
-                    </a>.
-                </li>
-                <li>
-                    <a href="https://turbowarp.github.io/sb3fix" target="_blank" rel="noopener noreferrer">
-                        Repair Scratch project (SB2/SB3) files with Sb3Fix
-                    </a>.
-                </li>
-                <li>
-                    <a href="https://drscratch.org/" target="_blank" rel="noopener noreferrer">
-                        Analyze Scratch Projects with Dr. Scratch
-                    </a>.
-                </li>
-                <li>
-                    <a href="https://leopardjs.com" target="_blank" rel="noopener noreferrer">
-                        Convert Scratch to JavaScript using LeopardJS
-                    </a>.
-                </li>
-                <li>
-                    <a href="https://github.com/aliasfoxkde/scratch-optimizer" target="_blank" rel="noopener noreferrer">
-                        View the source code for Scratch Optimizer on GitHub
-                    </a>.
-                </li>
-            </ul>
-        </div>
-
         <!-- Placeholder for summary or additional features -->
         <div id="summary"></div>
+		
+		<!-- Initially hide the download button -->
+		<button id="downloadButton" style="display:none;">Download Optimized File</button>
     </div>
 
     <!-- External JavaScript -->

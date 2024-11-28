@@ -1,50 +1,172 @@
-/* CSS */
+/* General Styles */
 body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background: #f7f7f7;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #333333;
+    transition: background-color 0.3s, color 0.3s;
 }
+
 .container {
-	width: 100%;
-	max-width: 600px;
-	margin: 50px auto;
-	padding: 20px;
-	background: #fff;
-	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, color 0.3s;
 }
+
 h1 {
-	text-align: center;
-	color: #333;
+    text-align: center;
+    color: inherit;
 }
+
+/* Dropzone */
 .dropzone {
-	margin: 20px 0;
-	padding: 30px;
-	border: 2px dashed #999;
-	text-align: center;
-	color: #666;
-	cursor: pointer;
-	border-radius: 8px;
+    margin: 20px 0;
+    padding: 30px;
+    border: 2px dashed #999999;
+    text-align: center;
+    color: #666666;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
+
 .dropzone.dragging {
-	border-color: #333;
-	color: #333;
+    border-color: #333333;
+    color: #333333;
 }
+
+/* Summary Section */
 #summary {
-	margin-top: 20px;
-	padding: 10px;
-	border: 1px solid #ddd;
-	background: #f9f9f9;
-	border-radius: 8px;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    background: #f9f9f9;
+    border-radius: 8px;
+    transition: background-color 0.3s, border-color 0.3s;
 }
+
 #summary p {
-	margin: 0 0 10px;
+    margin: 0 0 10px;
 }
+
 #summary a {
-	color: #007bff;
-	text-decoration: none;
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
 }
+
 #summary a:hover {
-	text-decoration: underline;
+    text-decoration: underline;
+}
+
+/* Header with Theme Toggle */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #cccccc;
+    transition: border-color 0.3s;
+}
+
+#themeToggle {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#themeToggle:hover {
+    background-color: #eeeeee;
+    transform: scale(1.1);
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+body.dark-mode .container {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .dropzone {
+    background-color: #333333;
+    border-color: #666666;
+    color: #dddddd;
+}
+
+body.dark-mode .dropzone.dragging {
+    border-color: #ffffff;
+    color: #ffffff;
+}
+
+body.dark-mode #summary {
+    background-color: #242424;
+    border-color: #444444;
+}
+
+body.dark-mode #summary a {
+    color: #80cfff;
+}
+
+body.dark-mode #themeToggle:hover {
+    background-color: #444444;
+}
+
+
+/* Add these styles to your CSS file */
+#downloadButton {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Hover state */
+#downloadButton:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Slight lift effect */
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.4); /* Enhanced shadow */
+}
+
+/* Active state (on click) */
+#downloadButton:active {
+    transform: translateY(2px); /* Button "pressed" effect */
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+/* Focus state (when button is focused) */
+#downloadButton:focus {
+    outline: none;
+    border: 2px solid #0056b3; /* Border outline on focus */
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2); /* Soft glow */
+}
+
+/* Mobile-friendly responsive styling */
+@media (max-width: 768px) {
+    #downloadButton {
+        font-size: 16px;
+        padding: 10px 20px;
+    }
 }

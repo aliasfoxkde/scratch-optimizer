@@ -12,6 +12,7 @@ const PORT = 3000;
 
 // Setup static folder for public assets
 app.use(express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Multer setup for file uploads
 const upload = multer({ dest: 'uploads/' });
@@ -32,7 +33,6 @@ async function optimizeImage(inputPath) {
     try {
         const tempPath = `${inputPath}.tmp`;
         await sharp(inputPath)
-            // .png({ quality: 75, compressionLevel: 9 })
             .png({ quality: 75, compressionLevel: 9 })
             .toFile(tempPath);
         await fs.promises.rename(tempPath, inputPath);
@@ -49,9 +49,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     const outputSb3 = `uploads/optimized_${path.parse(req.file.originalname).name}.sb3`;
 
     try {
-        // Truncate comments >= 8000 characters (SB2 compatability fix)
-		
-		// Step 1: Unzip uploaded SB3 file
+        // Step 1: Unzip uploaded SB3 file
         await fs.promises.mkdir(outputDir, { recursive: true });
 
         // Extract SB3 file to outputDir
@@ -87,10 +85,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         if (stat.isFile()) {
             let projectData = await fs.promises.readFile(projectPath, 'utf8');
             try {
-                // Perform find/replace directly on the string content
                 projectData = projectData.replace(/\.wav"/g, '.mp3"').replace(/"dataFormat":"wav"/g, '"dataFormat":"mp3"');
-
-                // Save the modified project.json without reformatting it
                 await fs.promises.writeFile(projectPath, projectData);
             } catch (err) {
                 console.error('Error processing project.json:', err);
@@ -99,28 +94,55 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         } else {
             return res.status(500).send('project.json not found or invalid.');
         }
+
         // Step 4: Repackage optimized files into .sb3
         const output = fs.createWriteStream(outputSb3);
-        const archive = archiver('zip', { zlib: { level: 7 } }); // Adjusted compression level
+        const archive = archiver('zip', { zlib: { level: 7 } });
 
         archive.pipe(output);
         archive.directory(outputDir, false);
         await archive.finalize();
 
-        // Download the file after archiving
-        res.download(outputSb3, 'optimized.sb3', (err) => {
-            if (err) {
-                console.error('Error sending file:', err);
-                res.status(500).send('Error sending file.');
-            } else {
-                console.log('File download completed successfully');
-            }
+        // Step 5: Get file sizes
+        const originalSize = req.file.size; 
+        const optimizedSize = fs.statSync(outputSb3).size;
+
+        // Step 6: Return the optimized file info
+        res.json({
+            message: 'File optimized successfully!',
+            originalFileSize: originalSize,
+            optimizedFileSize: optimizedSize,
+            downloadUrl: `/download/${path.basename(outputSb3)}`
         });
+
     } catch (error) {
         console.error('Error processing file:', error);
         res.status(500).send('Error processing file.');
     }
 });
+
+// Endpoint for file download
+app.get('/download/:filename', (req, res) => {
+    const file = path.join(__dirname, 'uploads', req.params.filename);
+    res.download(file, (err) => {
+        if (err) {
+            console.error('Error sending file:', err);
+            res.status(500).send('Error sending file.');
+        } else {
+            console.log('File download completed successfully');
+        }
+    });
+});
+
+// Helper function to format bytes into a readable size string
+function formatBytes(bytes, decimals = 2) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
