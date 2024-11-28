@@ -12,6 +12,7 @@ SB3 Optimizer Webapp for Scratch.
 - [ ] Options
   - [ ] Add Option tooltips
   - [ ] Add expand/collapse select for options
+- [ ] Extensive Testing Needed.
   
 ## TBD
 - [ ] Implement logic for the various optimizations: 
