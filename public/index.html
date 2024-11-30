@@ -18,6 +18,10 @@
 
     <!-- Link to external CSS for styling -->
     <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <!--- External JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@latest"></script>
 </head>
 
 <body>
@@ -49,11 +53,12 @@
                     </div>
                     <div>
                         <input type="checkbox" id="optimizeGraphics" name="optimizeGraphics" checked="true"
-                               title="Optimize graphics to improve performance.">
+                               title="Optimize graphics to improve performance." class="tooltip">
                         <label for="optimizeGraphics">Optimize Assets &amp; Graphics</label>
                     </div>
                     <div>
-                        <input type="checkbox" id="convertAudio" name="convertAudio"  checked="true">
+                        <input type="checkbox" id="convertAudio" name="convertAudio"  checked="true"
+                               title="Optimize audio by converting WAV into MP3." class="tooltip">
                         <label for="convertAudio">Convert WAV files to MP3</label>
                     </div>
                     <div>
