@@ -1,6 +1,8 @@
 {
   "name": "scratch-optimizer",
-  "version": "1.0.0",
+  "author": "Aliasfox",
+  "license": "MIT",
+  "version": "0.4.1",
   "description": "A browser-based tool to optimize Scratch (.sb3) projects",
   "scripts": {
     "dev": "npm install && npx serve public",
@@ -13,8 +15,6 @@
     "sb3",
     "turbowarp"
   ],
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "serve": "^14.2.1"
   }

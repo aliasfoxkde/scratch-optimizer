@@ -1,13 +1,13 @@
  // Initialize required variables
 const dropzone = document.getElementById("dropzone");
 const summaryDiv = document.getElementById("summary");
-let lamejs; // Will be loaded dynamically
 
 // Load required libraries
 async function loadDependencies() {
-    // Load lamejs for MP3 encoding
-    await import('https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js');
-    lamejs = window.lamejs;
+    // Check if lamejs is available
+    if (typeof window.lamejs === 'undefined') {
+        throw new Error('lamejs library not found. Please check your internet connection and try again.');
+    }
 }
 
 loadDependencies();
@@ -162,7 +162,7 @@ function optimizeBlocks(blocks) {
 
 // Convert WAV ArrayBuffer to MP3 ArrayBuffer using lamejs
 async function convertWavToMp3(wavArrayBuffer) {
-    if (!lamejs) {
+    if (!window.lamejs) {
         console.error("lamejs is not loaded!");
         return; // Exit the function if lamejs is not loaded
     }
@@ -176,7 +176,7 @@ async function convertWavToMp3(wavArrayBuffer) {
     const wavData = new Int16Array(wavArrayBuffer, 44); // Skip WAV header
 
     // Initialize MP3 encoder
-    const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, 128);
+    const mp3encoder = new window.lamejs.Mp3Encoder(numChannels, sampleRate, 128);
     const mp3Data = [];
 
     // Convert to MP3
