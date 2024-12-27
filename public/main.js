@@ -2,34 +2,61 @@
 const dropzone = document.getElementById("dropzone");
 const summaryDiv = document.getElementById("summary");
 
+// Initialize logger
+const logger = {
+    info: async (message) => console.info(message),
+    error: async (message, data) => console.error(message, data),
+    logUIEvent: async (event) => console.log(`UI Event: ${event}`)
+};
+
 // Load required libraries
 async function loadDependencies() {
-    // Check if lamejs is available
-    if (typeof window.lamejs === 'undefined') {
-        throw new Error('lamejs library not found. Please check your internet connection and try again.');
+    try {
+        // Check if lamejs is available
+        if (typeof window.lamejs === 'undefined') {
+            throw new Error('lamejs library not found');
+        }
+        await logger.info('Dependencies loaded successfully');
+    } catch (error) {
+        await logger.error('Failed to load dependencies', error);
+        throw error;
     }
 }
 
-loadDependencies();
+// Initialize application
+(async () => {
+    try {
+        await loadDependencies();
+        await logger.info('Application initialized successfully');
+    } catch (error) {
+        await logger.error('Failed to initialize application', error);
+    }
+})();
 
 // Drag-and-Drop Handling
 dropzone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropzone.classList.add("dragging");
+    logger.logUIEvent('dragover');
 });
 
 dropzone.addEventListener("dragleave", () => {
     dropzone.classList.remove("dragging");
+    logger.logUIEvent('dragleave');
 });
 
 dropzone.addEventListener("drop", async (e) => {
     e.preventDefault();
     dropzone.classList.remove("dragging");
+    logger.logUIEvent('drop');
 
     const file = e.dataTransfer.files[0];
     if (file) {
-        await loadDependencies();
-        await processFile(file);
+        try {
+            await processFile(file);
+        } catch (error) {
+            await logger.error('Error processing dropped file', { error, fileName: file.name });
+        }
     }
 });
 
@@ -41,11 +68,15 @@ dropzone.addEventListener("click", async () => {
     input.onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            await loadDependencies();
-            await processFile(file);
+            try {
+                await processFile(file);
+            } catch (error) {
+                await logger.error('Error processing selected file', { error, fileName: file.name });
+            }
         }
     };
     input.click();
+    logger.logUIEvent('dropzone-click');
 });
 
 // Theme Toggle
@@ -243,25 +274,18 @@ async function optimizePng(arrayBuffer) {
 }
 
 async function processFile(file) {
-    await loadDependencies();
-    summaryDiv.innerHTML = "<p>Processing...</p>";
-    const originalSize = file.size;
-
     try {
+        await logger.info(`Processing file: ${file.name}`);
+        await loadDependencies();
+        summaryDiv.innerHTML = "<p>Processing...</p>";
+        const originalSize = file.size;
+
         // Read the .sb3 file
         const zip = new JSZip();
         const contents = await zip.loadAsync(file);
 		
         // Process project.json
-        /*let projectJson;
-        if (contents.files['project.json']) {
-            projectJson = JSON.parse(await contents.files['project.json'].async('text'));
-        } else if (contents.files['sprite.json']) {
-            projectJson = JSON.parse(await contents.files['sprite.json'].async('text'));
-        } else {
-            throw new Error('No project.json or sprite.json found');
-        }*/
-		let projectJson = JSON.parse(await contents.files["project.json"].async("text"));
+        let projectJson = JSON.parse(await contents.files["project.json"].async("text"));
         if (projectJson.blocks) {
             projectJson.blocks = optimizeBlocks(projectJson.blocks);
         }
@@ -323,10 +347,11 @@ async function processFile(file) {
         // Create download button
         const fileName = file.name.replace(/\.[^/.]+$/, '') + '_optimized.sb3';
         createDownloadButton(downloadUrl, fileName);
-
-    } catch (err) {
-        console.error(err);
-        summaryDiv.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
+        await logger.info(`File processed successfully: ${file.name}`);
+    } catch (error) {
+        console.error(error);
+        summaryDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+        await logger.error(`Error processing file: ${file.name}`, error);
     }
 }
 

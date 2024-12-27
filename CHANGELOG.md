@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v0.5.2 - Refactoring, PWA, and Bug Fixes
+- [x] Cleaned up docs
+- [x] Add Progressive Web Application (PWA) Support
+- [x] Added verbose console logging (files optimized, progress, etc.)
+- [x] N/A Due to Cloudflare Pages rework: Clear/cleanup Uploads folder
+- [x] Fixed various console bugs (wrong meta tags, icon paths, etc.)
+- [x] Resolved "Error: lamejs is not loaded!" error in console log resulting in 0kb mp3 files.
+
 ## v0.4.1 - Architecture Update
 - [x] Converted to fully client-side processing
   - Removed server dependencies

@@ -7,9 +7,16 @@
     <meta name="description" content="Scratch Optimizer helps polish and enhance your Scratch projects for better performance and compatibility with tools like TurboWarp.">
     <meta name="keywords" content="Scratch, Scratch Optimizer, TurboWarp, SB3, Scratch Projects, Optimize, Game Development">
     <meta name="author" content="AliasFoxKDE">
+    <meta name="theme-color" content="#4a90e2">
+
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-status-bar-style" content="black">
+    <meta name="mobile-web-app-title" content="Scratch Optimizer">
 
     <!-- Icons for various devices and browsers -->
-    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="touch-icon" sizes="180x180" href="icons/touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
     <link rel="manifest" href="icons/site.webmanifest">
@@ -19,10 +26,32 @@
     <!-- Link to external CSS for styling -->
     <link rel="stylesheet" type="text/css" href="styles.css">
 
-    <!--- External JS Libraries -->
+    <!-- External JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+    
+    <!-- Logger must be loaded before main.js -->
+    <script src="logger.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        if (window.logger) {
+                            window.logger.info('ServiceWorker registration successful');
+                        }
+                    })
+                    .catch(error => {
+                        if (window.logger) {
+                            window.logger.error('ServiceWorker registration failed', error);
+                        }
+                    });
+            });
+        }
+    </script>
 </head>
 
 <body>

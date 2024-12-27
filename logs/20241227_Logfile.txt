@@ -1,0 +1,6 @@
+{"validationError":"Could not parse as a valid SB2 or SB3 project.","sb3Errors":[{"keyword":"maxLength","dataPath":".targets[1].comments['a'].text","schemaPath":"#/properties/text/maxLength","params":{"limit":8000},"message":"should NOT be longer than 8000 characters"}],"sb2Errors":[{"keyword":"required","dataPath":"","schemaPath":"#/required","params":{"missingProperty":"objName"},"message":"should have required property 'objName'"}]}
+
+---
+
+URL: https://turbowarp.org/
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
