@@ -70,23 +70,93 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Optimize Code Blocks in project.json
 function optimizeBlocks(blocks) {
+    let optimizations = {
+        removedDuplicates: 0,
+        flattenedLoops: 0,
+        unusedBlocks: 0,
+        emptyBlocks: 0,
+        simplifiedConditions: 0
+    };
+
+    const referencedBlocks = new Set(); // Track blocks that are referenced by others
+
+    // Helper to check if a block is referenced
+    function isBlockReferenced(blockId) {
+        return referencedBlocks.has(blockId);
+    }
+
+    // Mark referenced blocks
+    for (const blockId in blocks) {
+        const block = blocks[blockId];
+        if (block.parent) referencedBlocks.add(block.parent);
+        if (block.next) referencedBlocks.add(block.next);
+        if (block.inputs) {
+            for (const input of Object.values(block.inputs)) {
+                if (Array.isArray(input) && input[1]) {
+                    referencedBlocks.add(input[1]);
+                }
+            }
+        }
+    }
+
+    // Optimization Pass
     for (const blockId in blocks) {
         const block = blocks[blockId];
 
-        // Simplify "repeat 1" to direct execution
-        if (block.opcode === "control_repeat" && block.inputs["TIMES"]?.[1]?.[1] === "1") {
-            const substackId = block.inputs["SUBSTACK"]?.[1];
-            if (substackId && blocks[substackId]) {
-                blocks[substackId].parent = block.parent;
-                delete blocks[blockId];
+        // Remove duplicate blocks
+        for (const otherBlockId in blocks) {
+            if (
+                blockId !== otherBlockId &&
+                JSON.stringify(block) === JSON.stringify(blocks[otherBlockId])
+            ) {
+                delete blocks[otherBlockId];
+                optimizations.removedDuplicates++;
             }
         }
 
-        // Example: Remove unused variables (extend as needed)
-        if (block.opcode === "data_variable" && !block.next) {
+        // Flatten nested loops
+        if (block.opcode === "control_repeat" && block.inputs?.SUBSTACK) {
+            const substackId = block.inputs.SUBSTACK[1];
+            const substack = blocks[substackId];
+            if (substack && substack.opcode === "control_repeat") {
+                block.inputs.TIMES[1][1] *= substack.inputs.TIMES[1][1]; // Multiply loop counts
+                block.inputs.SUBSTACK = substack.inputs.SUBSTACK; // Point to inner substack
+                delete blocks[substackId];
+                optimizations.flattenedLoops++;
+            }
+        }
+
+        // Remove unused variables and procedures
+        if (
+            (block.opcode === "data_variable" || block.opcode === "procedures_definition") &&
+            !isBlockReferenced(blockId)
+        ) {
             delete blocks[blockId];
+            optimizations.unusedBlocks++;
+        }
+
+        // Remove empty event blocks
+        if (block.opcode.startsWith("event_") && !block.next) {
+            delete blocks[blockId];
+            optimizations.emptyBlocks++;
+        }
+
+        // Simplify conditions (e.g., "if true then")
+        if (
+            block.opcode === "control_if" &&
+            block.inputs.CONDITION &&
+            block.inputs.CONDITION[1][0] === "true"
+        ) {
+            const substackId = block.inputs.SUBSTACK[1];
+            if (substackId) {
+                blocks[substackId].parent = block.parent; // Reparent substack
+                delete blocks[blockId];
+                optimizations.simplifiedConditions++;
+            }
         }
     }
+
+    console.log("Optimization Summary:", optimizations);
     return blocks;
 }
 
@@ -183,13 +253,17 @@ async function processFile(file) {
         const contents = await zip.loadAsync(file);
 		
         // Process project.json
-        let projectJson;
+        /*let projectJson;
         if (contents.files['project.json']) {
             projectJson = JSON.parse(await contents.files['project.json'].async('text'));
         } else if (contents.files['sprite.json']) {
             projectJson = JSON.parse(await contents.files['sprite.json'].async('text'));
         } else {
             throw new Error('No project.json or sprite.json found');
+        }*/
+		let projectJson = JSON.parse(await contents.files["project.json"].async("text"));
+        if (projectJson.blocks) {
+            projectJson.blocks = optimizeBlocks(projectJson.blocks);
         }
 
         // Create new zip for optimized content

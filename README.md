@@ -14,6 +14,7 @@ You are welcome to contribute, make suggestions, provide feedback, or simply use
 The code is licensed under the permissive MIT License.
 
 ## TODO
+- [ ] Provide verbose console loggging (files optimized, progress, etc.)
 - [ ] Add Console-looking Progress Bar (with percentage loading bar)
 - [ ] Add support for .Sprite files (same structure as SB3 files)
 - [ ] Add support for bulk uploads (multiple files)
@@ -63,6 +64,7 @@ The code is licensed under the permissive MIT License.
 - [ ] Would it be useful to convert sprites to referenced sprite sheets?
 
 ## Bug
+- [ ] Resolve "lamejs is not loaded!" error in console log.
 
 ## Usage
 
