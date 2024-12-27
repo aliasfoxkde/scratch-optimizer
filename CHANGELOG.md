@@ -14,6 +14,7 @@
   - Added file size comparison display
 - [x] Removed ffmpeg dependency
 - [x] Added drag-and-drop file upload support
+- [x] Implement ffmpeg wasm to run client side (reduce server requirements)
 - [x] Bug fixes for ffmpeg js module
 
 ## v0.3.1 - Feature Improvements & Bug Fixes

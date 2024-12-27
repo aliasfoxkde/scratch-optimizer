@@ -1,10 +1,14 @@
 # Scratch Optimizer
-[Scratch Optimizer (demo)](https://scratch-optimizer.cyopsys.com) is a tool designed to clean, refactor, 
-and enhance Scratch (.sb3) projects. It streamlines project files by optimizing assets, improving code 
-structure, and removing redundancy, all while maintaining compatibility with Scratch’s native environment. 
-This tool is designed to enhance your Scratch projects, particularly for use with the TurboWarp Packager. 
-It's especially useful if you're preparing your project for publishing as a game or for advanced packaging 
-needs.
+![Scratch Optimizer Banner Image](./public/img/banner.png)
+
+<a href="https://scratch-optimizer.cyopsys.com" target="_blank">Scratch Optimizer (Demo)</a>
+is a tool designed to clean, refactor, and enhance Scratch (.sb3) projects. It streamlines 
+project files by optimizing assets, improving code structure, and removing redundancy, all 
+while maintaining compatibility with Scratch’s native environment. This tool is designed to 
+enhance your Scratch projects, particularly for use with the 
+<a href="https://packager.turbowarp.org" target="_blank">TurboWarp Packager</a>. 
+This tool is especially useful if you're preparing your project for publishing as a game 
+or for advanced packaging needs.
 
 You are welcome to contribute, make suggestions, provide feedback, or simply use the tool for free. 
 The code is licensed under the permissive MIT License.
@@ -12,7 +16,8 @@ The code is licensed under the permissive MIT License.
 ## TODO
 - [ ] Add Console-looking Progress Bar (with percentage loading bar)
 - [ ] Add support for .Sprite files (same structure as SB3 files)
-- [ ] Add support for bulk uploads (multiple files) 
+- [ ] Add support for bulk uploads (multiple files)
+- [ ] Add ability to fine-tune optimizations (image settings, etc.)
 - [ ] Improve PNG optimization for "web"
 - [ ] Provide summary with stats on completion
 - [ ] Add graphics and improve UI
@@ -26,7 +31,7 @@ The code is licensed under the permissive MIT License.
   - [ ] Add expand/collapse select for options
 - [ ] Extensive Testing Needed.
   
-## TBD
+## TASKS
 - [ ] Implement logic for the various optimizations: 
   - [ ] Optimize Code Blocks
   - [ ] Use AI to Comment Blocks
@@ -43,13 +48,10 @@ The code is licensed under the permissive MIT License.
 - [ ] Remove instances in project.json where either images or sound do not exist.
 
 ## Future Scope
+- [ ] Add ability to provide AI API Key (for comments and refactoring)
 - [ ] Add logic to optimize SVG images (if applicable)
 - [ ] Create Progressive Web Application (PWA)
-- [ ] Implement ffmpeg wasm to run client side (reduce server requirements)
-  npm install @ffmpeg/ffmpeg @ffmpeg/util
-- [ ] Make it so that this app can be deployed with GitHub/Cloudflare Pages (as client side PWA)
-- [ ] Use Sb3Fix under the hood:
-  https://github.com/TurboWarp/sb3fix
+- [ ] Use Sb3Fix under the hood: https://github.com/TurboWarp/sb3fix
 - [ ] Create analysis report (using Dr. Scratch check + own)
 - [ ] Show report (analysis summary with stats)
 - [ ] Dr. Scratch under the hood (or equiv. for analysis & reporting)

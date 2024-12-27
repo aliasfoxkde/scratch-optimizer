@@ -68,6 +68,28 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// Optimize Code Blocks in project.json
+function optimizeBlocks(blocks) {
+    for (const blockId in blocks) {
+        const block = blocks[blockId];
+
+        // Simplify "repeat 1" to direct execution
+        if (block.opcode === "control_repeat" && block.inputs["TIMES"]?.[1]?.[1] === "1") {
+            const substackId = block.inputs["SUBSTACK"]?.[1];
+            if (substackId && blocks[substackId]) {
+                blocks[substackId].parent = block.parent;
+                delete blocks[blockId];
+            }
+        }
+
+        // Example: Remove unused variables (extend as needed)
+        if (block.opcode === "data_variable" && !block.next) {
+            delete blocks[blockId];
+        }
+    }
+    return blocks;
+}
+
 // Convert WAV ArrayBuffer to MP3 ArrayBuffer using lamejs
 async function convertWavToMp3(wavArrayBuffer) {
     if (!lamejs) {
@@ -159,7 +181,7 @@ async function processFile(file) {
         // Read the .sb3 file
         const zip = new JSZip();
         const contents = await zip.loadAsync(file);
-        
+		
         // Process project.json
         let projectJson;
         if (contents.files['project.json']) {
@@ -172,8 +194,6 @@ async function processFile(file) {
 
         // Create new zip for optimized content
         const optimizedZip = new JSZip();
-        
-        // Process each file
         for (const [filename, zipEntry] of Object.entries(contents.files)) {
             if (zipEntry.dir) {
                 optimizedZip.folder(filename);
@@ -194,14 +214,11 @@ async function processFile(file) {
                     .replace(/"dataFormat":"wav"/g, '"dataFormat":"mp3"');
                 projectJson = JSON.parse(projectJson);
             } else if (filename.endsWith('.png')) {
-                // Optimize PNG
                 const optimizedPng = await optimizePng(content);
                 optimizedZip.file(filename, optimizedPng);
             } else if (filename === 'project.json' || filename === 'sprite.json') {
-                // Add updated project.json
                 optimizedZip.file(filename, JSON.stringify(projectJson));
             } else {
-                // Copy other files as-is
                 optimizedZip.file(filename, content);
             }
         }
