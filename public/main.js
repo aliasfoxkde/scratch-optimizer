@@ -1,5 +1,16 @@
+// Initialize required variables
 const dropzone = document.getElementById("dropzone");
 const summaryDiv = document.getElementById("summary");
+let lamejs; // Will be loaded dynamically
+
+// Load required libraries
+async function loadDependencies() {
+    // Load lamejs for MP3 encoding
+    await import('https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js');
+    lamejs = window.lamejs;
+}
+
+loadDependencies();
 
 // Drag-and-Drop Handling
 dropzone.addEventListener("dragover", (e) => {
@@ -17,7 +28,7 @@ dropzone.addEventListener("drop", async (e) => {
 
     const file = e.dataTransfer.files[0];
     if (file) {
-        await uploadFile(file);
+        await processFile(file);
     }
 });
 
@@ -29,7 +40,7 @@ dropzone.addEventListener("click", async () => {
     input.onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            await uploadFile(file);
+            await processFile(file);
         }
     };
     input.click();
@@ -51,46 +62,168 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.classList.toggle("dark-mode");
         const isDarkMode = document.body.classList.contains("dark-mode");
         themeToggle.textContent = isDarkMode ? "☀️" : "🌙";
-
-        // Save theme preference in localStorage
         localStorage.setItem("theme", isDarkMode ? "dark" : "light");
     });
 });
 
-async function uploadFile(file) {
-    const formData = new FormData();
-    formData.append("file", file);
+// Convert WAV ArrayBuffer to MP3 ArrayBuffer using lamejs
+async function convertWavToMp3(wavArrayBuffer) {
+    // Parse WAV header
+    const wavView = new DataView(wavArrayBuffer);
+    const numChannels = wavView.getUint16(22, true);
+    const sampleRate = wavView.getUint32(24, true);
+    const bitsPerSample = wavView.getUint16(34, true);
 
+    // Get audio data
+    const wavData = new Int16Array(wavArrayBuffer, 44); // Skip WAV header
+
+    // Initialize MP3 encoder
+    const mp3encoder = new lamejs.Mp3Encoder(numChannels, sampleRate, 128);
+    const mp3Data = [];
+
+    // Convert to MP3
+    const sampleBlockSize = 1152; // Multiple of 576
+    for (let i = 0; i < wavData.length; i += sampleBlockSize) {
+        const samples = wavData.slice(i, i + sampleBlockSize);
+        let mp3buf;
+        
+        if (numChannels === 1) {
+            mp3buf = mp3encoder.encodeBuffer(samples);
+        } else {
+            // Split stereo channels
+            const leftChannel = new Int16Array(samples.length / 2);
+            const rightChannel = new Int16Array(samples.length / 2);
+            for (let j = 0; j < samples.length; j += 2) {
+                leftChannel[j/2] = samples[j];
+                rightChannel[j/2] = samples[j+1];
+            }
+            mp3buf = mp3encoder.encodeBuffer(leftChannel, rightChannel);
+        }
+        
+        if (mp3buf.length > 0) {
+            mp3Data.push(mp3buf);
+        }
+    }
+
+    // Get the last chunk of MP3 data
+    const lastMp3buf = mp3encoder.flush();
+    if (lastMp3buf.length > 0) {
+        mp3Data.push(lastMp3buf);
+    }
+
+    // Combine all MP3 chunks
+    const totalLength = mp3Data.reduce((acc, buf) => acc + buf.length, 0);
+    const mp3ArrayBuffer = new Uint8Array(totalLength);
+    let offset = 0;
+    for (const buf of mp3Data) {
+        mp3ArrayBuffer.set(buf, offset);
+        offset += buf.length;
+    }
+
+    return mp3ArrayBuffer.buffer;
+}
+
+// Optimize PNG using Canvas
+async function optimizePng(arrayBuffer) {
+    return new Promise((resolve) => {
+        const blob = new Blob([arrayBuffer]);
+        const img = new Image();
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob((optimizedBlob) => {
+                optimizedBlob.arrayBuffer().then(resolve);
+            }, 'image/png', 0.75);
+        };
+
+        img.src = URL.createObjectURL(blob);
+    });
+}
+
+async function processFile(file) {
     summaryDiv.innerHTML = "<p>Processing...</p>";
+    const originalSize = file.size;
 
     try {
-        const response = await fetch("/upload", {
-            method: "POST",
-            body: formData,
+        // Read the .sb3 file
+        const zip = new JSZip();
+        const contents = await zip.loadAsync(file);
+        
+        // Process project.json
+        let projectJson;
+        if (contents.files['project.json']) {
+            projectJson = JSON.parse(await contents.files['project.json'].async('text'));
+        } else if (contents.files['sprite.json']) {
+            projectJson = JSON.parse(await contents.files['sprite.json'].async('text'));
+        } else {
+            throw new Error('No project.json or sprite.json found');
+        }
+
+        // Create new zip for optimized content
+        const optimizedZip = new JSZip();
+        
+        // Process each file
+        for (const [filename, zipEntry] of Object.entries(contents.files)) {
+            if (zipEntry.dir) {
+                optimizedZip.folder(filename);
+                continue;
+            }
+
+            const content = await zipEntry.async('arraybuffer');
+
+            if (filename.endsWith('.wav')) {
+                // Convert WAV to MP3
+                const mp3Data = await convertWavToMp3(content);
+                const newFilename = filename.replace('.wav', '.mp3');
+                optimizedZip.file(newFilename, mp3Data);
+                
+                // Update project.json references
+                projectJson = JSON.stringify(projectJson)
+                    .replace(new RegExp(filename, 'g'), newFilename)
+                    .replace(/"dataFormat":"wav"/g, '"dataFormat":"mp3"');
+                projectJson = JSON.parse(projectJson);
+            } else if (filename.endsWith('.png')) {
+                // Optimize PNG
+                const optimizedPng = await optimizePng(content);
+                optimizedZip.file(filename, optimizedPng);
+            } else if (filename === 'project.json' || filename === 'sprite.json') {
+                // Add updated project.json
+                optimizedZip.file(filename, JSON.stringify(projectJson));
+            } else {
+                // Copy other files as-is
+                optimizedZip.file(filename, content);
+            }
+        }
+
+        // Generate optimized .sb3 file
+        const optimizedContent = await optimizedZip.generateAsync({
+            type: 'blob',
+            compression: 'DEFLATE',
+            compressionOptions: { level: 9 }
         });
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.statusText}`);
-        }
+        // Create download URL
+        const downloadUrl = URL.createObjectURL(optimizedContent);
+        const optimizedSize = optimizedContent.size;
 
-        const data = await response.json();
-        if (!data.originalFileSize || !data.optimizedFileSize || !data.downloadUrl) {
-            throw new Error("Missing expected data from server.");
-        }
+        // Show results
+        const originalSizeMB = (originalSize / 1024 / 1024).toFixed(2);
+        const optimizedSizeMB = (optimizedSize / 1024 / 1024).toFixed(2);
+        const savings = (((originalSize - optimizedSize) / originalSize) * 100).toFixed(1);
 
-        const originalFileSizeMB = (data.originalFileSize / 1024 / 1024).toFixed(2);
-        const optimizedFileSizeMB = (data.optimizedFileSize / 1024 / 1024).toFixed(2);
-
-        // Show the download button and details
         summaryDiv.innerHTML = `
             <h2>File optimized successfully!</h2>
-            <p><strong>Original File Size:</strong> ${originalFileSizeMB} MB</p>
-            <p><strong>Optimized File Size:</strong> ${optimizedFileSizeMB} MB</p>
+            <p><strong>Original File Size:</strong> ${originalSizeMB} MB</p>
+            <p><strong>Optimized File Size:</strong> ${optimizedSizeMB} MB</p>
+            <p><strong>Space Saved:</strong> ${savings}%</p>
         `;
 
-        // Create the download button after the process is complete
-        const downloadUrl = data.downloadUrl; // Vs Generic Label: "Optimized SB3 File."
-        const fileName = downloadUrl.split('/').pop();  // Extract from the URL
+        // Create download button
+        const fileName = file.name.replace(/\.[^/.]+$/, '') + '_optimized.sb3';
         createDownloadButton(downloadUrl, fileName);
 
     } catch (err) {
@@ -99,16 +232,10 @@ async function uploadFile(file) {
     }
 }
 
-// Update Progress Bar Element
-function updateProgress(percent) {
-    const progress = document.getElementById("progress");
-    progress.style.width = `${percent}%`;
-}
-
 // Create Download Button
 function createDownloadButton(fileUrl, fileName) {
     const existingButton = document.getElementById("downloadButton");
-    if (existingButton) existingButton.remove(); // Remove old button if any
+    if (existingButton) existingButton.remove();
 
     const button = document.createElement("a");
     button.id = "downloadButton";

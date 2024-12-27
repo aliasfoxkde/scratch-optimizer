@@ -62,38 +62,37 @@ The code is licensed under the permissive MIT License.
 ## Bug
 
 ## Usage
-- `npm install`
-- `node server.js`
 
-## Troubleshooting
-If you get an error `SELF_SIGNED_CERT_IN_CHAIN`, you are missing a signed certificate. For development, you can 
-work around this by disabling Authentication checks:
+### Development
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm start
+   ```
+4. Open http://localhost:3000 in your browser
 
-- Disable certificate validation (for dev purposes only)
-  `set NODE_TLS_REJECT_UNAUTHORIZED=0`
+### Production Deployment
+The project is configured for deployment on Cloudflare Pages:
 
-- Clean npm cache to avoid reusing any faulty cache
-  `npm cache clean --force`
+1. Fork this repository
+2. Log in to Cloudflare Pages
+3. Create a new project and connect it to your forked repository
+4. Use these build settings:
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Node.js version: 18 (or later)
 
-- Set npm registry to HTTP (in case HTTPS is causing issues)
-  `npm config set registry http://registry.npmjs.org/`
-
-- Disable strict SSL checks
-  `npm config set strict-ssl false`
-
-- Install Yarn (if not already installed)
-  `npm install -g yarn`
-
-- Change Yarn registry to npm's official registry
-  `yarn config set registry https://registry.npmjs.org/`
-
-- Run Yarn install
-  `yarn install`
-
-## Alternative Method
-- Go through the steps to generating a certificate and assigning it to npm.
-- Set the certificate path (replace with your actual path):
-  `npm config set cafile "path/to/your/certificate.pem"`
+## Features
+- Fully client-side processing - no server required
+- WAV to MP3 conversion using lamejs
+- PNG optimization using Canvas API
+- Drag-and-drop file upload
+- Dark/light theme support
+- Progress tracking and file size comparison
 
 ## CHANGELOG
 - See [CHANGELOG.md](CHANGELOG.md)

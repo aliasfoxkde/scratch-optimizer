@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## v0.4.0 - Architecture Update
+- [x] Converted to fully client-side processing
+  - Removed server dependencies
+  - Implemented browser-based WAV to MP3 conversion using lamejs
+  - Added client-side PNG optimization using Canvas API
+- [x] Added Cloudflare Pages support
+  - Added build configuration
+  - Created static deployment setup
+- [x] Improved file processing
+  - Added progress tracking
+  - Enhanced error handling
+  - Added file size comparison display
+- [x] Removed ffmpeg dependency
+- [x] Added drag-and-drop file upload support
+
 ## v0.3.1 - Feature Improvements & Bug Fixes
 - [x] Add Option tooltips (initial)
 - [x] Move downloads to "downloads/" folder
