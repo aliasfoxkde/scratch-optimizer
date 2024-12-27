@@ -1,9 +1,10 @@
 # Scratch Optimizer
-Scratch Optimizer is a tool designed to clean, refactor, and enhance Scratch (.sb3) projects. It streamlines 
-project files by optimizing assets, improving code structure, and removing redundancy, all while maintaining 
-compatibility with Scratch’s native environment. This tool is designed to enhance your Scratch projects, 
-particularly for use with the TurboWarp Packager. It's especially useful if you're preparing your project 
-for publishing as a game or for advanced packaging needs.
+[Scratch Optimizer (demo)](https://scratch-optimizer.cyopsys.com) is a tool designed to clean, refactor, 
+and enhance Scratch (.sb3) projects. It streamlines project files by optimizing assets, improving code 
+structure, and removing redundancy, all while maintaining compatibility with Scratch’s native environment. 
+This tool is designed to enhance your Scratch projects, particularly for use with the TurboWarp Packager. 
+It's especially useful if you're preparing your project for publishing as a game or for advanced packaging 
+needs.
 
 You are welcome to contribute, make suggestions, provide feedback, or simply use the tool for free. 
 The code is licensed under the permissive MIT License.
@@ -93,6 +94,7 @@ The project is configured for deployment on Cloudflare Pages:
 - Drag-and-drop file upload
 - Dark/light theme support
 - Progress tracking and file size comparison
+- Support for Cloudflare Pages
 
 ## CHANGELOG
 - See [CHANGELOG.md](CHANGELOG.md)

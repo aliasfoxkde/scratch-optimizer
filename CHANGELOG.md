@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v0.4.0 - Architecture Update
+## v0.4.1 - Architecture Update
 - [x] Converted to fully client-side processing
   - Removed server dependencies
   - Implemented browser-based WAV to MP3 conversion using lamejs
@@ -14,6 +14,7 @@
   - Added file size comparison display
 - [x] Removed ffmpeg dependency
 - [x] Added drag-and-drop file upload support
+- [x] Bug fixes for ffmpeg js module
 
 ## v0.3.1 - Feature Improvements & Bug Fixes
 - [x] Add Option tooltips (initial)
