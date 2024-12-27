@@ -1,4 +1,4 @@
-// Initialize required variables
+ // Initialize required variables
 const dropzone = document.getElementById("dropzone");
 const summaryDiv = document.getElementById("summary");
 let lamejs; // Will be loaded dynamically
@@ -28,6 +28,7 @@ dropzone.addEventListener("drop", async (e) => {
 
     const file = e.dataTransfer.files[0];
     if (file) {
+        await loadDependencies();
         await processFile(file);
     }
 });
@@ -40,6 +41,7 @@ dropzone.addEventListener("click", async () => {
     input.onchange = async (e) => {
         const file = e.target.files[0];
         if (file) {
+            await loadDependencies();
             await processFile(file);
         }
     };
@@ -68,6 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Convert WAV ArrayBuffer to MP3 ArrayBuffer using lamejs
 async function convertWavToMp3(wavArrayBuffer) {
+    if (!lamejs) {
+        console.error("lamejs is not loaded!");
+        return; // Exit the function if lamejs is not loaded
+    }
     // Parse WAV header
     const wavView = new DataView(wavArrayBuffer);
     const numChannels = wavView.getUint16(22, true);
@@ -145,6 +151,7 @@ async function optimizePng(arrayBuffer) {
 }
 
 async function processFile(file) {
+    await loadDependencies();
     summaryDiv.innerHTML = "<p>Processing...</p>";
     const originalSize = file.size;
 
