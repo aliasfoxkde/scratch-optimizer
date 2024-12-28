@@ -444,9 +444,9 @@ async function processFile(file) {
         setTimeout(() => {
             summaryDiv.innerHTML = `
                 <h2>File optimized successfully!</h2>
-                <p><strong>Original File Size:</strong> ${originalSizeMB} MB</p>
-                <p><strong>Optimized File Size:</strong> ${optimizedSizeMB} MB</p>
-                <p><strong>Space Saved:</strong> ${savings}%</p>
+                <p>Original File Size:\t${originalSizeMB} MB</p>
+                <p>Optimized File Size:\t${optimizedSizeMB} MB</p>
+                <p>Space Saved:\t\t${savings}%</p>
             `;
 
             // Create download button
@@ -472,19 +472,6 @@ function createDownloadButton(fileUrl, fileName) {
     button.href = fileUrl;
     button.download = fileName;
     button.textContent = `Download ${fileName}`;
-    button.style = `
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        color: #ffffff;
-        background-color: #007bff;
-        text-align: center;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s;
-    `;
 
     button.addEventListener("mouseover", () => {
         button.style.backgroundColor = "#0056b3";
