@@ -2,7 +2,7 @@
   "name": "scratch-optimizer",
   "author": "Aliasfox",
   "license": "MIT",
-  "version": "0.4.1",
+  "version": "0.5.2",
   "description": "A browser-based tool to optimize Scratch (.sb3) projects",
   "scripts": {
     "dev": "npm install && npx serve public",

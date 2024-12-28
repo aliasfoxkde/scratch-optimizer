@@ -2,11 +2,20 @@
 const dropzone = document.getElementById("dropzone");
 const summaryDiv = document.getElementById("summary");
 
+// UI Elements
+const progressContainer = document.getElementById('progress-container');
+const progressText = progressContainer?.querySelector('.progress-text');
+const progressPercentage = progressContainer?.querySelector('.percentage');
+const progressStatus = progressContainer?.querySelector('.status');
+const progressFill = progressContainer?.querySelector('.progress-fill');
+const logContainer = document.getElementById('log-container');
+const logContent = document.getElementById('log-content');
+
 // Initialize logger
 const logger = {
     info: async (message) => console.info(message),
     error: async (message, data) => console.error(message, data),
-    logUIEvent: async (event) => console.log(`UI Event: ${event}`)
+    logUIEvent: async (event, data) => console.log(`UI Event: ${event}`, data)
 };
 
 // Load required libraries
@@ -34,6 +43,16 @@ async function loadDependencies() {
 })();
 
 // Drag-and-Drop Handling
+const ALLOWED_EXTENSIONS = ['.sb2', '.sb3', '.sprite2', '.sprite3'];
+
+function isValidFileType(filename) {
+    return ALLOWED_EXTENSIONS.some(ext => filename.toLowerCase().endsWith(ext));
+}
+
+function showError(message) {
+    summaryDiv.innerHTML = `<p style="color: red;">Error: ${message}</p>`;
+}
+
 dropzone.addEventListener("dragover", (e) => {
     e.preventDefault();
     dropzone.classList.add("dragging");
@@ -52,6 +71,11 @@ dropzone.addEventListener("drop", async (e) => {
 
     const file = e.dataTransfer.files[0];
     if (file) {
+        if (!isValidFileType(file.name)) {
+            showError(`Unsupported file type. Please use ${ALLOWED_EXTENSIONS.join(', ')} files only.`);
+            logger.logUIEvent('invalid-file-type', { fileName: file.name });
+            return;
+        }
         try {
             await processFile(file);
         } catch (error) {
@@ -82,6 +106,7 @@ dropzone.addEventListener("click", async () => {
 // Theme Toggle
 document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("themeToggle");
+    if (!themeToggle) return;
 
     // Load theme from localStorage
     const savedTheme = localStorage.getItem("theme");
@@ -273,24 +298,102 @@ async function optimizePng(arrayBuffer) {
     });
 }
 
+// Progress and Log Functions
+function updateProgress(status, percent) {
+    const progressContainer = document.getElementById('progress-container');
+    if (!progressContainer) return;
+
+    progressContainer.style.display = 'block';
+    const progressStatus = progressContainer.querySelector('.status');
+    const progressPercentage = progressContainer.querySelector('.percentage');
+    const progressFill = progressContainer.querySelector('.progress-fill');
+
+    if (progressStatus) progressStatus.textContent = status;
+    if (progressPercentage) progressPercentage.textContent = `${Math.round(percent)}%`;
+    if (progressFill) progressFill.style.width = `${percent}%`;
+}
+
+function resetProgress() {
+    const progressContainer = document.getElementById('progress-container');
+    const logContainer = document.getElementById('log-container');
+    const logContent = document.getElementById('log-content');
+    const progressFill = progressContainer?.querySelector('.progress-fill');
+
+    if (progressContainer) progressContainer.style.display = 'none';
+    if (progressFill) progressFill.style.width = '0%';
+    if (logContainer) logContainer.style.display = 'none';
+    if (logContent) logContent.innerHTML = '';
+}
+
+function addLogEntry(message, level = 'info') {
+    const logContainer = document.getElementById('log-container');
+    const logContent = document.getElementById('log-content');
+    if (!logContainer || !logContent) return;
+
+    if (!logContainer.style.display || logContainer.style.display === 'none') {
+        logContainer.style.display = 'block';
+    }
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${level}`;
+    entry.textContent = message;
+    logContent.appendChild(entry);
+    logContent.scrollTop = logContent.scrollHeight;
+}
+
+// Toggle Logs Visibility
+window.toggleLogs = function() {
+    const content = document.getElementById('log-content');
+    const icon = document.querySelector('.toggle-icon');
+    if (content.classList.contains('collapsed')) {
+        content.classList.remove('collapsed');
+        icon.style.transform = 'rotate(0deg)';
+    } else {
+        content.classList.add('collapsed');
+        icon.style.transform = 'rotate(-90deg)';
+    }
+};
+
+// Update processFile function to show progress
 async function processFile(file) {
     try {
+        summaryDiv.innerHTML = `
+            <div class="progress-bar">
+                <div class="progress-bar-fill"></div>
+                <div class="progress-text">0% Processing...</div>
+            </div>
+        `;
+        
+        const progressBar = summaryDiv.querySelector('.progress-bar-fill');
+        const progressText = summaryDiv.querySelector('.progress-text');
+        
+        function updateProgress(percent, text) {
+            progressBar.style.width = `${percent}%`;
+            progressText.textContent = `${Math.round(percent)}% ${text}`;
+        }
+
+        // Initialize
+        updateProgress(5, 'Starting optimization...');
         await logger.info(`Processing file: ${file.name}`);
         await loadDependencies();
-        summaryDiv.innerHTML = "<p>Processing...</p>";
         const originalSize = file.size;
 
         // Read the .sb3 file
+        updateProgress(10, 'Reading file...');
         const zip = new JSZip();
         const contents = await zip.loadAsync(file);
-		
+        
         // Process project.json
+        updateProgress(30, 'Processing project data...');
         let projectJson = JSON.parse(await contents.files["project.json"].async("text"));
+        
+        // Optimize blocks
+        updateProgress(50, 'Optimizing blocks...');
         if (projectJson.blocks) {
             projectJson.blocks = optimizeBlocks(projectJson.blocks);
         }
 
         // Create new zip for optimized content
+        updateProgress(70, 'Creating optimized project...');
         const optimizedZip = new JSZip();
         for (const [filename, zipEntry] of Object.entries(contents.files)) {
             if (zipEntry.dir) {
@@ -321,7 +424,7 @@ async function processFile(file) {
             }
         }
 
-        // Generate optimized .sb3 file
+        updateProgress(90, 'Finalizing...');
         const optimizedContent = await optimizedZip.generateAsync({
             type: 'blob',
             compression: 'DEFLATE',
@@ -333,20 +436,24 @@ async function processFile(file) {
         const optimizedSize = optimizedContent.size;
 
         // Show results
+        updateProgress(100, 'Complete!');
         const originalSizeMB = (originalSize / 1024 / 1024).toFixed(2);
         const optimizedSizeMB = (optimizedSize / 1024 / 1024).toFixed(2);
         const savings = (((originalSize - optimizedSize) / originalSize) * 100).toFixed(1);
 
-        summaryDiv.innerHTML = `
-            <h2>File optimized successfully!</h2>
-            <p><strong>Original File Size:</strong> ${originalSizeMB} MB</p>
-            <p><strong>Optimized File Size:</strong> ${optimizedSizeMB} MB</p>
-            <p><strong>Space Saved:</strong> ${savings}%</p>
-        `;
+        setTimeout(() => {
+            summaryDiv.innerHTML = `
+                <h2>File optimized successfully!</h2>
+                <p><strong>Original File Size:</strong> ${originalSizeMB} MB</p>
+                <p><strong>Optimized File Size:</strong> ${optimizedSizeMB} MB</p>
+                <p><strong>Space Saved:</strong> ${savings}%</p>
+            `;
 
-        // Create download button
-        const fileName = file.name.replace(/\.[^/.]+$/, '') + '_optimized.sb3';
-        createDownloadButton(downloadUrl, fileName);
+            // Create download button
+            const fileName = file.name.replace(/\.[^/.]+$/, '') + '_optimized.sb3';
+            createDownloadButton(downloadUrl, fileName);
+        }, 500);
+
         await logger.info(`File processed successfully: ${file.name}`);
     } catch (error) {
         console.error(error);

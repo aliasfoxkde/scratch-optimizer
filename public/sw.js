@@ -38,6 +38,11 @@ self.addEventListener('activate', (event) => {
 
 // Fetch assets from cache or network
 self.addEventListener('fetch', (event) => {
+    // Skip non-HTTP requests
+    if (!event.request.url.startsWith('http')) {
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request)
             .then((response) => {
@@ -46,8 +51,8 @@ self.addEventListener('fetch', (event) => {
                 }
                 return fetch(event.request)
                     .then((response) => {
-                        // Don't cache non-successful responses
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
+                        // Don't cache non-successful responses or non-GET requests
+                        if (!response || response.status !== 200 || event.request.method !== 'GET') {
                             return response;
                         }
                         // Clone the response as it can only be consumed once

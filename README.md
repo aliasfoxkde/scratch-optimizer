@@ -57,6 +57,7 @@ This project is configured for deployment on
 - Support for Cloudflare Pages
 
 ## TODO
+- [ ] Provide verbose console logging (files optimized, progress, etc.)
 - [ ] Add Console-looking Progress Bar (with percentage loading bar)
 - [ ] Add support for .Sprite files (same structure as SB3 files)
 - [ ] Add support for bulk uploads (multiple files)
@@ -65,6 +66,7 @@ This project is configured for deployment on
 - [ ] Provide summary with stats on completion
 - [ ] Add graphics and improve UI
 - [ ] Optimize code base and refactor
+- [ ] Clear/cleanup Uploads folder
 - [ ] Debugging and Testing
   - [ ] Add logging wrapper to assist in resolving issues.
   - [ ] Confirm that a vanilla deployment works
@@ -82,8 +84,8 @@ This project is configured for deployment on
   - [x] Cleanup Project Files
   - [ ] Truncate Comments > 8000 characters
   - [ ] Remove Original Comments 
-- [ ] `Cleanup Project files` optional step and would include getting rid of 
-      hash filenames and use the actual asset names (this may cause side-effects).
+- [ ] `Cleanup Project files` optional step and would include getting rid of hash filenames and 
+      use the actual asset names (this may cause side-effects).
 - [ ] Remove dead code blocks
 - [ ] Remove instances in project.json where either images or sound do not exist.
 
@@ -97,14 +99,15 @@ This project is configured for deployment on
   - [ ] Optimize SVG Images
   - [ ] Remove Metadata
   - [ ] Remove Redundancy (monitor-value, etc.)
+- [ ] Production cleanup (split up main.js logic into smaller libraries)
 - [ ] Add ability to provide AI API Key (for comments and refactoring)
+- [ ] Create Progressive Web Application (PWA)
 - [ ] Use Sb3Fix under the hood: https://github.com/TurboWarp/sb3fix
-- [ ] Impliment optimizations done in `sb3o` project (and validate)
 - [ ] Create analysis report (using Dr. Scratch check + own)
 - [ ] Show report (analysis summary with stats)
 - [ ] Dr. Scratch under the hood (or equiv. for analysis & reporting)
-  - https://www.drscratch.org/
-  - https://github.com/jemole/drScratch
+  https://www.drscratch.org/
+  https://github.com/jemole/drScratch
 - [ ] Convert to JS, refactor (AI), and convert back to blockly format (Scratch).
       The purpose for this would be to optimize the code (reduce redundant blocks and optimize logic).
 - [ ] Integrate with CORETEX project (Ultra-small & fast offline AI LLM PWA)
@@ -113,8 +116,7 @@ This project is configured for deployment on
 - [ ] Would it be useful to convert sprites to referenced sprite sheets?
 
 ## Bug
-- [ ] Error: Cannot read properties of undefined (reading 'async')
-- [ ] Error: Can't find end of central directory : is this a zip file ?
+- [ ] Resolve "lamejs is not loaded!" error in console log.
 
 ## CHANGELOG
 - See [CHANGELOG.md](CHANGELOG.md)

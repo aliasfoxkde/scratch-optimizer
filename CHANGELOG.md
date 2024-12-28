@@ -2,6 +2,7 @@
 
 ## v0.5.2 - Refactoring, PWA, and Bug Fixes
 - [x] Cleaned up docs
+- [x] Added initial progress bar for file optimization
 - [x] Add Progressive Web Application (PWA) Support
 - [x] Added verbose console logging (files optimized, progress, etc.)
 - [x] N/A Due to Cloudflare Pages rework: Clear/cleanup Uploads folder

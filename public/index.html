@@ -12,14 +12,13 @@
     <!-- PWA Support -->
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-status-bar-style" content="black">
-    <meta name="mobile-web-app-title" content="Scratch Optimizer">
+    <meta name="theme-color" content="#4a90e2">
 
-    <!-- Icons for various devices and browsers -->
-    <link rel="touch-icon" sizes="180x180" href="icons/touch-icon.png">
+    <!-- Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-    <link rel="manifest" href="icons/site.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icons/icon-512x512.png">
 
     <title>Scratch Optimizer</title>
 
@@ -110,12 +109,16 @@
         <!-- Info Section -->
         <div id="info">
             <p>
-                <strong>Scratch Optimizer</strong> is a tool designed to enhance your Scratch projects, particularly for use with 
-                the <a href="https://packager.turbowarp.org" target="_blank" rel="noopener noreferrer">TurboWarp Packager</a>. 
-                It's especially useful if you're preparing your project for publishing as a game or for advanced packaging needs.
+                <strong><a href="https://github.com/aliasfoxkde/scratch-optimizer" target="_blank" rel="noopener noreferrer">Scratch Optimizer</a></strong> 
+                is a tool designed to enhance your Scratch projects, particularly for use with the
+                <a href="https://packager.turbowarp.org" target="_blank" rel="noopener noreferrer">TurboWarp Packager</a>. 
+                It's especially useful if you're preparing your project for publishing as a game, for advanced packaging needs, 
+                or in able to convert older SB2 projects to SB3.
             </p>
             <p>
-                You are welcome to contribute, make suggestions, provide feedback, or simply use the tool for free. 
+                You are welcome to <a href="https://github.com/aliasfoxkde/scratch-optimizer/blob/main/docs/CONTRIBUTE.md" target="_blank" rel="noopener noreferrer">contribute</a>, 
+                make suggestions, provide feedback, <a href="https://github.com/aliasfoxkde/scratch-optimizer/issues" target="_blank" rel="noopener noreferrer">report issues</a>, 
+                or submit requests for feature or issues, or simply use the tool for free. 
                 The code is licensed under the permissive <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer">MIT License</a>.
             </p>
         </div>
@@ -123,11 +126,6 @@
         <!-- Placeholder for summary or additional features -->
         <div id="summary"></div>
 
-        <!-- Progress Bar: Work in Progress -->
-        <!-- <div id="progressBar" style="width: 100%; background: #ddd;">
-            <div id="progress" style="width: 0%; height: 20px; background: #007bff;"></div>
-        </div> -->
-		
 		<!-- Initially hide the download button -->
 		<button id="downloadButton" style="display:none;">Download Optimized File</button>
     </div>
