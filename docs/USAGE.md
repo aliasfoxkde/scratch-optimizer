@@ -31,3 +31,14 @@ This project is configured for deployment on
 6. **Environment variables** (optional):
    - Define any required environment variables for your project under the settings page.
    - This is currently not used but will be in future releases.
+
+### Android Installation
+Install the PWA for a native-like Android experience. Any chromium based browser (Chrome, Brave, Edge, etc.)
+will work but Chrome is specifically recommended as it seems to produce the most native-like experience, 
+and it's the Android default.
+
+#### Install the Progressive Web App (PWA)
+* On your Android device, open Chrome
+* Go to a website with a web app that you want to install.
+* On the right of the address bar, tap More > Add to home screen > Install.
+* Follow the on-screen instructions.

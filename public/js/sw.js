@@ -1,11 +1,12 @@
-const CACHE_NAME = 'scratch-optimizer-v1';
+const CACHE_NAME = 'scratch-optimizer-v0.6.0';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
-    '/main.js',
-    '/styles.css',
-    '/logger.js',
-    '/manifest.json',
+    '/css/index.css',
+    '/css/mobile.css',
+    '/js/main.js',
+    '/js/logger.js',
+	'/manifest.json',
     'https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js',
     'https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js'
 ];
