@@ -41,10 +41,14 @@
   - [ ] Optimize SVG Images
   - [ ] Remove Metadata
   - [ ] Remove Redundancy (monitor-value, etc.)
-- [ ] Production cleanup
+- [ ] Production Improvements
   - [ ] Split up main.js logic into smaller libraries
+  - [ ] Create build step to compile/optimize into static package
+  - [ ] Build in CI/CD pipeline (auto linting, etc.)
+  - [ ] Consider replacing `npm` with `pnpm`
 - [ ] Add ability to provide AI API Key (for comments and refactoring)
 - [ ] Use Sb3Fix under the hood: https://github.com/TurboWarp/sb3fix
+- [ ] Use sb3o under the hood: https://github.com/GarboMuffin/sb3o
 - [ ] Create analysis report (using Dr. Scratch check + own)
 - [ ] Show report (analysis summary with stats)
 - [ ] [Dr. Scratch](https://www.drscratch.org) under the hood (or equiv. for analysis & reporting)
