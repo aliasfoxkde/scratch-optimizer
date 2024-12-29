@@ -23,7 +23,8 @@
     <title>Scratch Optimizer</title>
 
     <!-- Link to external CSS for styling -->
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/mobile.css">
 
     <!-- External JS Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
@@ -31,13 +32,13 @@
     <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
     
     <!-- Logger must be loaded before main.js -->
-    <script src="logger.js"></script>
+    <script src="js/logger.js"></script>
 
     <!-- Service Worker Registration -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
+                navigator.serviceWorker.register('js/sw.js')
                     .then(registration => {
                         if (window.logger) {
                             window.logger.info('ServiceWorker registration successful');
@@ -129,7 +130,7 @@
     </div>
 
     <!-- External JavaScript -->
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
 </body>
 
 </html>

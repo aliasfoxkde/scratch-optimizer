@@ -1,7 +1,7 @@
 {
     "name": "Scratch Optimizer",
     "short_name": "ScratchOpt",
-    "version": "0.5.2",
+    "version": "0.6.0",
     "description": "Optimize Scratch projects for better performance",
     "start_url": "/",
     "display": "standalone",

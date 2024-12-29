@@ -1,10 +1,19 @@
 # CHANGELOG
 
+## v0.6.0 - Cleanup
+- [x] Improved app for mobile responsiveness
+- [x] Split up CSS into separate files
+- [x] Cleaned up documentation and tasks
+- [x] Cleaned up folder and project structure
+- [x] Move CSS and JS files to own directories 
+- [x] N/A: Add graphics and improve UI
+- [x] Clear/cleanup Uploads folder
+
 ## v0.5.4 - Refactoring, PWA, and Bug Fixes
 - [x] Cleaned up docs
 - [x] Added initial progress bar for file optimization
 - [x] Added Progressive Web Application (PWA) Support
-- [x] Added verbose console logging (files optimized, progress, etc.)
+- [x] Confirm that a vanilla deployment works
 - [x] N/A Due to Cloudflare Pages rework: Clear/cleanup Uploads folder
 - [x] Fixed various console bugs (wrong meta tags, icon paths, etc.)
 - [x] Fixed "Error: lamejs is not loaded!" in console log resulting in 0kb MP3 files
