@@ -30,8 +30,6 @@ async function loadDependencies() {
         await logger.error('Failed to load dependencies', error);
         throw error;
     }
-    document.getElementById('optimizeBlocks').disabled = true;
-    document.getElementById('removeComments').disabled = true;
 }
 
 // Initialize application
@@ -446,9 +444,9 @@ async function processFile(file) {
         setTimeout(() => {
             summaryDiv.innerHTML = `
                 <h2>File optimized successfully!</h2>
-                <p><strong>Original File Size:</strong>\t${originalSizeMB} MB</p>
-                <p><strong>Optimized File Size:</strong>\t${optimizedSizeMB} MB</p>
-                <p><strong>Space Saved:</strong>\t\t${savings}%</p>
+                <p>Original File Size:\t${originalSizeMB} MB</p>
+                <p>Optimized File Size:\t${optimizedSizeMB} MB</p>
+                <p>Space Saved:\t\t${savings}%</p>
             `;
 
             // Create download button

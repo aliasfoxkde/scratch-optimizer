@@ -63,44 +63,37 @@
 
         <!-- Dropzone Section -->
         <div id="dropzone" class="dropzone" aria-label="File Upload">
-            Drag and drop your <strong>.sb3</strong> file here or click to upload
+            Drag and drop your <strong>.sb3</strong> file here or click to upload.
         </div>
 
         <!-- Options Section -->
         <div id="options">
-            <h3>Options (Coming Soon)</h3>
-            <p>Select optimization features you'd like to enable:</p>
             <form>
-                <fieldset disabled>
-                    <div>
-                        <input type="checkbox" id="optimizeCode" name="optimizeCode">
-                        <label for="optimizeCode">Optimize Code Blocks</label>
+                <fieldset>
+                    <legend>Optimization Options</legend>
+                    <div class="option">
+                        <input type="checkbox" id="optimizeAssets" name="optimizeAssets" checked>
+                        <label for="optimizeAssets" title="Optimize and compress images, sounds, and other assets">Optimize Assets & Graphics</label>
                     </div>
-                    <div>
-                        <input type="checkbox" id="aiComment" name="aiComment">
-                        <label for="aiComment">Use AI to Comment Blocks</label>
+                    <div class="option">
+                        <input type="checkbox" id="convertWav" name="convertWav" checked>
+                        <label for="convertWav" title="Convert WAV files to MP3 format for smaller file size">Convert WAV files to MP3</label>
                     </div>
-                    <div>
-                        <input type="checkbox" id="optimizeGraphics" name="optimizeGraphics" checked="true"
-                               title="Optimize graphics to improve performance." class="tooltip">
-                        <label for="optimizeGraphics">Optimize Assets &amp; Graphics</label>
+                    <div class="option">
+                        <input type="checkbox" id="cleanupFiles" name="cleanupFiles" checked>
+                        <label for="cleanupFiles" title="Remove unused assets and clean up project structure">Cleanup Project Files</label>
                     </div>
-                    <div>
-                        <input type="checkbox" id="convertAudio" name="convertAudio"  checked="true"
-                               title="Optimize audio by converting WAV into MP3." class="tooltip">
-                        <label for="convertAudio">Convert WAV files to MP3</label>
+                    <div class="option">
+                        <input type="checkbox" id="truncateComments" name="truncateComments" checked>
+                        <label for="truncateComments" title="Truncate comments longer than 8000 characters">Truncate Comments > 8000 characters</label>
                     </div>
-                    <div>
-                        <input type="checkbox" id="cleanupFiles" name="cleanupFiles" checked="true">
-                        <label for="cleanupFiles">Cleanup Project Files</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="truncateComments" name="truncateComments">
-                        <label for="truncateComments">Truncate Comments > 8000 characters</label>
-                    </div>
-                    <div>
+                    <div class="option">
                         <input type="checkbox" id="removeComments" name="removeComments">
-                        <label for="removeComments">Remove Comments</label>
+                        <label for="removeComments" title="Remove all comments from the project">Remove All Comments (Beta)</label>
+                    </div>
+                    <div class="option">
+                        <input type="checkbox" id="optimizeBlocks" name="optimizeBlocks">
+                        <label for="optimizeBlocks" title="Experimental: Optimize and clean up code blocks">Optimize Code Blocks (Beta)</label>
                     </div>
                 </fieldset>
             </form>
@@ -123,11 +116,16 @@
             </p>
         </div>
 
-        <!-- Placeholder for summary or additional features -->
-        <div id="summary"></div>
+        <div id="summary">
+            <!-- <span class="status">Processing...</span>
+            <span class="percentage">0%</span>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div> -->
 
-		<!-- Initially hide the download button -->
-		<button id="downloadButton" style="display:none;">Download Optimized File</button>
+		    <!-- Initially hide the download button -->
+		    <button id="downloadButton" style="display:none;">Download Optimized File</button>
+        </div>
     </div>
 
     <!-- External JavaScript -->
