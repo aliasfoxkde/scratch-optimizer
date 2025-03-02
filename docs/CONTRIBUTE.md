@@ -1,7 +1,5 @@
 # CONTRIBUTE
-First off, thank you for considering contributing to THIS PROJECT! This fork aims to expand the capabilities 
-of the original project by integrating multiple LLM providers and enhancing functionality. Every contribution 
-helps make bolt.diy a better tool for developers worldwide.
+First off, thank you for considering contributing to this project! Please take a look through the documentation for ways you can contribute.
 
 ## 📋 Table of Contents
 - [Code of Conduct](#code-of-conduct)
@@ -27,10 +25,6 @@ expected to uphold this code. Please report unacceptable behavior to the project
 2. Create a new branch for your feature/fix
 3. Write your code
 4. Submit a pull request
-
-### ✨ Becoming a Core Contributor
-We're looking for dedicated contributors to help maintain and grow this project. 
-If you're interested in becoming a core contributor, please fill out our Contributor Application Form.
 
 ## Pull Request Guidelines
 
