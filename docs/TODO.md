@@ -60,4 +60,4 @@
 - [ ] Would it be useful to convert sprites to referenced sprite sheets?
 
 ## Bug
-- [ ] TBD.
+- [ ] Unchecking boxes do not appear to be affecting the output.
